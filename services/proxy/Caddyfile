@@ -1,0 +1,52 @@
+# Public entry point of the Windmill Railway template.
+#
+# Railway gives one public HTTP domain per service, but Windmill serves the app
+# from the server (port 8000) and the editor's websockets (LSP, debugger,
+# multiplayer) from the windmill-extra gateway (port 3000). This proxy splits
+# traffic by path, matching the path split of Windmill's own docker-compose
+# stack (checked at windmill-labs/windmill v1.830.0).
+#
+# Upstream addresses come from service variables (Railway private network).
+# The defaults below only exist so `caddy validate` works at build time.
+
+{
+	# No admin API, no on-disk config, no ACME: Railway terminates TLS at its edge.
+	admin off
+	persist_config off
+	auto_https off
+
+	servers {
+		# Honour incoming X-Forwarded-* headers (client IP, original https
+		# scheme) only when the peer is in a private address range.
+		trusted_proxies static private_ranges
+	}
+
+	log {
+		format console
+	}
+}
+
+# A bare port binds every interface (IPv4 and IPv6).
+:{$PORT:8080} {
+	log {
+		format console
+	}
+
+	# Railway healthcheck. Answered by Caddy itself, so a proxy redeploy does
+	# not fail while the Windmill server is still running migrations.
+	handle /__proxy/health {
+		respond "ok" 200
+	}
+
+	# Editor websockets: /ws/* (LSP), /ws_debug/* (debugger) and
+	# /ws_mp/* (multiplayer, Enterprise Edition only; disabled in this template).
+	@windmill_extra path /ws/* /ws_debug/* /ws_mp/*
+	handle @windmill_extra {
+		reverse_proxy {$WINDMILL_EXTRA_UPSTREAM:windmill-extra.railway.internal:3000}
+	}
+
+	# Everything else: UI, REST API, webhooks, SSE streams.
+	handle {
+		reverse_proxy {$WINDMILL_SERVER_UPSTREAM:windmill.railway.internal:8000}
+	}
+}
