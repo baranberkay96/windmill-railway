@@ -3,7 +3,7 @@
 ## Listing
 
 - **Name:** Windmill v1 Scripts, Flows and Internal Apps (version label `v1` = major of the pinned release `v1.830.0`; Windmill tags its releases with a `v` prefix)
-- **Description (79 chars):** Turn Python and TS scripts into workflows, UIs and cron jobs. Scalable workers.
+- **Description (79 chars):** Turn Python and TS scripts into workflows, UIs and cron jobs with workers.
 - **Category:** Automation
 - **Tags:** windmill, workflow, automation, scripts, internal-tools, cron, python, typescript
 
