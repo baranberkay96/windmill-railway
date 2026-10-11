@@ -1,6 +1,6 @@
 # Deploy and Host Windmill with Railway
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/windmill-v1-scripts-flows-and-internal-a)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/windmill-v1-scripts-flows-and-internal-a?referralCode=20H68q)
 
 Windmill is an open-source developer platform that turns Python, TypeScript, Go, Bash and SQL scripts into flows, auto-generated UIs, internal apps, webhooks and cron jobs. This community template runs the full self-hosted stack on Railway: API server, scalable worker pool, native worker, editor services and Postgres.
 
