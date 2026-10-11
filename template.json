@@ -408,5 +408,6 @@
       }
     }
   },
-  "buckets": []
+  "buckets": [],
+  "image": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/windmill.svg"
 }
